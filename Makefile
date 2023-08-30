@@ -7,7 +7,11 @@ source_dir := ${current_dir}"src"
 artifact_dir := ${current_dir}"things"
 config_dir := ${current_dir}"configs"
 
+ifeq ($(shell command -v podman 2> /dev/null),)
 DOCKER_CMD := "docker"
+else
+DOCKER_CMD := "podman"
+endif
 .DEFAULT_GOAL := help
 
 help: ## Will print this help.
