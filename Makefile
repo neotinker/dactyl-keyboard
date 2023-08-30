@@ -35,27 +35,28 @@ build-container: check-requirements ## Build docker container.
 
 config: check-requirements ## Generate configuration.
 	@echo "\nGenerate configuration..\n" && \
-	${DOCKER_CMD} run --rm --name DM-config -v ${source_dir}:/app/src -v ${artifact_dir}:/app/things -v ${config_dir}:/app/configs dactyl-keyboard python3 -i src/generate_configuration.py && \
+	${DOCKER_CMD} run --rm --name DM-config -v ${current_dir}:/app dactyl-keyboard python3 -i src/generate_configuration.py && \
 	echo "Done"
 .PHONY: config
 
 build-models: check-requirements ## Build models.
 	@echo "\nGenerate configured model..\n" && \
 	cd ${current_dir} && \
-	${DOCKER_CMD} run --rm --name DM-run -v ${source_dir}:/app/src -v ${artifact_dir}:/app/things -v ${config_dir}:/app/configs dactyl-keyboard python3 -i src/dactyl_manuform.py && \
+	${DOCKER_CMD} run --rm --name DM-run -v ${current_dir}:/app dactyl-keyboard python3 -i src/dactyl_manuform.py && \
 	echo "Done"
 .PHONY: config
 
 build-models: check-requirements ## Build models.
 	@echo "\nGenerate release models..\n" && \
 	cd ${current_dir} && \
-	${DOCKER_CMD} run --rm --name DM-release-build -v ${source_dir}:/app/src -v ${artifact_dir}:/app/things -v ${config_dir}:/app/configs dactyl-keyboard python3 -i src/model_builder.py && \
+	${DOCKER_CMD} run --rm --name DM-release-build -v ${current_dir}:/app dactyl-keyboard python3 -i src/model_builder.py && \
 	echo "Done"
 .PHONY: config
 
 
 shell: check-requirements ## Open an interactive shell inside a container.
-	@${DOCKER_CMD} run --rm -it --name DM-shell -v ${source_dir}:/app/src -v ${artifact_dir}:/app/things -v ${config_dir}:/app/configs dactyl-keyboard bash && \
+	cd ${current_dir} && \
+	${DOCKER_CMD} run --rm -it --name DM-shell -v ${current_dir}:/app dactyl-keyboard bash && \
 	echo "\nBye!"
 .PHONY: shell
 
