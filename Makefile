@@ -46,7 +46,7 @@ build-models: check-requirements ## Build models.
 	echo "Done"
 .PHONY: config
 
-build-models: check-requirements ## Build models.
+build-release-models: check-requirements ## Build models.
 	@echo "\nGenerate release models..\n" && \
 	cd ${current_dir} && \
 	${DOCKER_CMD} run --rm --name DM-release-build -v ${current_dir}:/app dactyl-keyboard python3 -i src/model_builder.py && \
